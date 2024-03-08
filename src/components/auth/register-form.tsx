@@ -4,6 +4,10 @@ import { RegisterType, registerSchema } from "@/libs/schema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ErrorField } from "./field-error";
+import { useTransition } from "react";
+import { registerAction } from "@/app/actions/auth.action";
+import toast from "react-hot-toast";
+import { SubmitLoading } from "../submit-loading";
 
 export function RegisterForm() {
   const {
@@ -12,15 +16,23 @@ export function RegisterForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterType>({ resolver: zodResolver(registerSchema) });
+  const [isPending, setTransition] = useTransition();
 
   async function registerHandler(fields: RegisterType) {
-    console.log(fields);
+    setTransition(async () => {
+      try {
+        await registerAction(fields);
+        reset();
+      } catch (error) {
+        if (error instanceof Error) toast.error(error.message);
+      }
+    });
   }
 
   return (
     <section className="py-5">
       <form onSubmit={handleSubmit(registerHandler)}>
-        <fieldset className="flex flex-col gap-3">
+        <fieldset disabled={isPending} className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
             <label htmlFor="name" className="text-slate-200 font-semibold">
               Name
@@ -74,7 +86,7 @@ export function RegisterForm() {
             <ErrorField fieldError={errors.password} />
           </div>
           <button className="w-full py-2 bg-slate-900 rounded-md">
-            Register
+            {isPending ? <SubmitLoading /> : "Register"}
           </button>
         </fieldset>
       </form>

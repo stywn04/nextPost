@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
-const font = Poppins({ weight: ['300', '400', '500', '600', '700'], subsets: ["latin"] });
+const font = Poppins({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        <Toaster position="bottom-right" toastOptions={{ duration: 2500 }} />
+        {children}
+      </body>
     </html>
   );
 }
