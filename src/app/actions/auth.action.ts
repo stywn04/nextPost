@@ -1,6 +1,11 @@
 "use server";
 
-import { RegisterType, registerSchema } from "@/libs/schema/auth.schema";
+import {
+  LoginType,
+  RegisterType,
+  loginSchema,
+  registerSchema,
+} from "@/libs/schema/auth.schema";
 import { createClient } from "@/libs/supabase/server";
 import { findUserByEmail, findUserByUsername } from "./user.action";
 
@@ -35,6 +40,25 @@ export async function registerAction(fields: RegisterType) {
         avatar: `https://ui-avatars.com/api/?name=${name}`,
       },
     },
+  });
+
+  if (error) {
+    throw Error(error.message);
+  }
+}
+
+export async function loginAction(fields: LoginType) {
+  const validatedFields = loginSchema.safeParse(fields);
+  if (!validatedFields.success) {
+    throw Error("Invalid fields!");
+  }
+
+  const supabase = createClient();
+  const { email, password } = validatedFields.data;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
 
   if (error) {
