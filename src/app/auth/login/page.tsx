@@ -7,11 +7,18 @@ export const metadata: Metadata = {
   title: "Login",
 };
 
-export default function LoginPage() {
+interface LoginPageProps {
+  searchParams: {
+    redirectTo: string | undefined;
+  };
+}
+
+export default function LoginPage({ searchParams }: LoginPageProps) {
+  const redirectTo = searchParams?.redirectTo ?? "/posts";
   return (
     <main>
       <AuthHeader title="Login" desc="login use your account to continue" />
-      <LoginForm />
+      <LoginForm redirectTo={redirectTo} />
       <AuthFooter href="/auth/register" desc="doesn't have account ?" />
     </main>
   );

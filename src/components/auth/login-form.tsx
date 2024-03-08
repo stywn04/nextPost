@@ -9,7 +9,7 @@ import { loginAction } from "@/app/actions/auth.action";
 import toast from "react-hot-toast";
 import { SubmitLoading } from "../submit-loading";
 
-export function LoginForm() {
+export function LoginForm({ redirectTo }: { redirectTo: string }) {
   const {
     register,
     reset,
@@ -21,7 +21,7 @@ export function LoginForm() {
   async function registerHandler(fields: LoginType) {
     setTransition(async () => {
       try {
-        await loginAction(fields);
+        await loginAction(fields, redirectTo);
         reset();
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);

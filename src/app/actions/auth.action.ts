@@ -46,9 +46,11 @@ export async function registerAction(fields: RegisterType) {
   if (error) {
     throw Error(error.message);
   }
+
+  redirect("/profile");
 }
 
-export async function loginAction(fields: LoginType) {
+export async function loginAction(fields: LoginType, redirectTo: string) {
   const validatedFields = loginSchema.safeParse(fields);
   if (!validatedFields.success) {
     throw Error("Invalid fields!");
@@ -65,6 +67,7 @@ export async function loginAction(fields: LoginType) {
   if (error) {
     throw Error(error.message);
   }
+  redirect(redirectTo);
 }
 
 export async function logoutAction() {
