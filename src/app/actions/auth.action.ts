@@ -8,6 +8,7 @@ import {
 } from "@/libs/schema/auth.schema";
 import { createClient } from "@/libs/supabase/server";
 import { findUserByEmail, findUserByUsername } from "./user.action";
+import { redirect } from "next/navigation";
 
 export async function registerAction(fields: RegisterType) {
   const validatedFields = registerSchema.safeParse(fields);
@@ -64,4 +65,12 @@ export async function loginAction(fields: LoginType) {
   if (error) {
     throw Error(error.message);
   }
+}
+
+export async function logoutAction() {
+  const supabase = createClient();
+
+  await supabase.auth.signOut();
+
+  redirect("/auth/login");
 }
