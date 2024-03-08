@@ -110,34 +110,34 @@ export type Database = {
       }
       user: {
         Row: {
-          avatar: string | null
-          bio: string | null
-          created_at: string | null
-          email: string | null
+          avatar: string
+          bio: string
+          created_at: string
+          email: string
           id: string
-          name: string | null
-          updated_at: string | null
-          username: string | null
+          name: string
+          updated_at: string
+          username: string
         }
         Insert: {
-          avatar?: string | null
-          bio?: string | null
-          created_at?: string | null
-          email?: string | null
+          avatar: string
+          bio: string
+          created_at?: string
+          email: string
           id: string
-          name?: string | null
-          updated_at?: string | null
-          username?: string | null
+          name: string
+          updated_at?: string
+          username: string
         }
         Update: {
-          avatar?: string | null
-          bio?: string | null
-          created_at?: string | null
-          email?: string | null
+          avatar?: string
+          bio?: string
+          created_at?: string
+          email?: string
           id?: string
-          name?: string | null
-          updated_at?: string | null
-          username?: string | null
+          name?: string
+          updated_at?: string
+          username?: string
         }
         Relationships: [
           {
