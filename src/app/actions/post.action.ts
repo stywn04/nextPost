@@ -21,3 +21,19 @@ export async function submitPostAction(content: string, image: null | string) {
   revalidatePath("/posts");
   redirect("/posts");
 }
+
+export async function getAllPostsAction() {
+  const supabase = createClient();
+  const { data, error } = await supabase.from("post").select(`
+    *,
+    user(name,username,avatar),
+    like(id,user_id),
+    comment(content,user(name,username,avatar))
+  `);
+
+  if (!data) {
+    throw error.message;
+  }
+
+  return data;
+}
