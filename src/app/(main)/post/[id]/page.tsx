@@ -11,8 +11,12 @@ import {
   PostOptions,
 } from "@/components/post";
 import { getCurrentUserAction } from "@/app/actions/user.action";
-import { CommentForm } from "@/components/comment/comment-form";
-import { DateTime } from "luxon";
+import {
+  CommentForm,
+  CommentContent,
+  CommentUser,
+  CommentDate,
+} from "@/components/comment";
 
 export async function generateMetadata({ params }: PostPageProps) {
   const { id } = params;
@@ -57,26 +61,13 @@ export default async function PostPage({ params }: PostPageProps) {
       <div>
         {comments.map((comment) => (
           <div key={comment.id} className="p-5 border-b-[1px] border-slate-900">
-            <section className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full overflow-hidden">
-                <img src={comment.user?.avatar} alt={comment.user?.username} />
-              </div>
-              <div className="flex items-center gap-2">
-                <h4 className="font-semibold text-slate-200">
-                  {comment.user?.name}
-                </h4>
-                &bull;
-                <p className="font-light text-slate-700">
-                  @{comment.user?.username}
-                </p>
-              </div>
-            </section>
-            <section className="pl-10 py-2 whitespace-pre-line">
-              <p>{comment.content}</p>
-            </section>
-            <section className="text-sm text-slate-700 flex justify-end mt-2">
-              <span>{DateTime.fromISO(comment.created_at).toRelative()}</span>
-            </section>
+            <CommentUser
+              avatar={comment.user?.avatar as string}
+              username={comment.user?.username as string}
+              name={comment.user?.name as string}
+            />
+            <CommentContent content={post.content} />
+            <CommentDate created_at={comment.created_at} />
           </div>
         ))}
       </div>
