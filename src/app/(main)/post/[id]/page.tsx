@@ -66,7 +66,7 @@ export default async function PostPage({ params }: PostPageProps) {
               username={comment.user?.username as string}
               name={comment.user?.name as string}
             />
-            <CommentContent content={post.content} />
+            <CommentContent content={comment.content} />
             <CommentDate created_at={comment.created_at} />
           </div>
         ))}
