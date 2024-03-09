@@ -3,6 +3,7 @@ import { likePostAction } from "@/app/actions/post.action";
 import { Heart, MessageSquare } from "lucide-react";
 import { useTransition } from "react";
 import { SubmitLoading } from "../submit-loading";
+import { useRouter } from "next/navigation";
 
 interface PostActivityProps {
   post_id: string;
@@ -11,6 +12,7 @@ interface PostActivityProps {
 }
 export function PostActivity({ post_id, user_id, like }: PostActivityProps) {
   const [isPending, setTransition] = useTransition();
+  const router = useRouter();
   async function likeHandler() {
     setTransition(async () => {
       await likePostAction({ post_id, like });
@@ -29,7 +31,11 @@ export function PostActivity({ post_id, user_id, like }: PostActivityProps) {
           )}
         </button>
       )}
-      <button>
+      <button
+        onClick={() => {
+          router.push(`/post/${post_id}`);
+        }}
+      >
         <MessageSquare />
       </button>
     </div>

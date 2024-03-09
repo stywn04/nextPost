@@ -3,7 +3,7 @@
 import { createClient } from "@/libs/supabase/server";
 import { getCurrentUserAction } from "./user.action";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export async function submitPostAction(content: string, image: null | string) {
   const supabase = createClient();
@@ -58,4 +58,31 @@ export async function likePostAction({ post_id, like }: LikePostActionArgs) {
     : await supabase.from("like").insert({ user_id: id, post_id });
 
   revalidatePath("/posts");
+}
+
+export async function getPostByIdAction(id: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("post")
+    .select(
+      `
+      *,
+      user(name,username,avatar),
+      like(id,user_id),
+      comment(content,user(name,username,avatar))
+    `,
+    )
+    .eq("id", id)
+    .limit(1)
+    .single();
+
+  if (error) {
+    throw Error(error.message);
+  }
+
+  if (!data) {
+    return notFound();
+  }
+
+  return data;
 }
