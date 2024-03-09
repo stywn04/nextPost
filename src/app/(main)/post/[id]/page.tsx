@@ -2,23 +2,24 @@ import {
   getAllPostCommentAction,
   getPostByIdAction,
 } from "@/app/actions/post.action";
-import { PostUser } from "@/components/post/user";
-import { PostOptions } from "@/components/post/options";
-import { PostContent } from "@/components/post/content";
-import { PostActivity } from "@/components/post/post-activity";
-import { PostCount } from "@/components/post/count";
-import { PostDate } from "@/components/post/date";
+import {
+  PostUser,
+  PostCount,
+  PostActivity,
+  PostDate,
+  PostContent,
+  PostOptions,
+} from "@/components/post";
 import { getCurrentUserAction } from "@/app/actions/user.action";
 import { CommentForm } from "@/components/comment/comment-form";
 import { DateTime } from "luxon";
 
-
 export async function generateMetadata({ params }: PostPageProps) {
-  const { id } = params
-  const { user, content } = await getPostByIdAction(id)
+  const { id } = params;
+  const { user, content } = await getPostByIdAction(id);
   return {
-    title: `@${user?.username} : ${content}`
-  }
+    title: `@${user?.username} : ${content}`,
+  };
 }
 
 interface PostPageProps {

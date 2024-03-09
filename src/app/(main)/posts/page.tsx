@@ -1,10 +1,12 @@
 import { getAllPostsAction } from "@/app/actions/post.action";
-import { PostContent } from "@/components/post/content";
-import { PostCount } from "@/components/post/count";
-import { PostOptions } from "@/components/post/options";
-import { PostActivity } from "@/components/post/post-activity";
-import { PostUser } from "@/components/post/user";
-import { PostDate } from "@/components/post/date";
+import {
+  PostUser,
+  PostCount,
+  PostActivity,
+  PostDate,
+  PostContent,
+  PostOptions,
+} from "@/components/post";
 import type { Metadata } from "next";
 import { getCurrentUserAction } from "@/app/actions/user.action";
 
