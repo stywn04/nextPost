@@ -5,6 +5,7 @@ import { PostContent } from "@/components/post/content";
 import { PostActivity } from "@/components/post/post-activity";
 import { PostCount } from "@/components/post/count";
 import { PostDate } from "@/components/post/date";
+import { getCurrentUserAction } from "@/app/actions/user.action";
 
 interface PostPageProps {
   params: { id: string };
@@ -12,6 +13,7 @@ interface PostPageProps {
 export default async function PostPage({ params }: PostPageProps) {
   const { id } = params;
   const post = await getPostByIdAction(id);
+  const { id: user_id } = await getCurrentUserAction();
   return (
     <main>
       <div key={post.id} className="p-5 border-b-[1px] border-slate-900">
@@ -25,7 +27,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </section>
         <section className="my-2">
           <PostContent image={post.image} content={post.content} />
-          <PostActivity user_id={id} post_id={post.id} like={post.like} />
+          <PostActivity user_id={user_id} post_id={post.id} like={post.like} />
         </section>
         <section className="flex items-center justify-between text-sm text-slate-700 ">
           <PostCount like={post.like.length} comment={post.comment.length} />
