@@ -126,3 +126,25 @@ export async function getAllPostCommentAction(post_id: string) {
 
   return data;
 }
+
+export async function getPostByUserId() {
+  const { id: user_id } = await getCurrentUserAction();
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("post")
+    .select(
+      `
+      *,
+      user(name,username,avatar),
+      like(id,user_id),
+      comment(content,user(name,username,avatar))
+    `,
+    )
+    .eq("user_id", user_id).order("created_at", { ascending: false });
+
+  if (error) {
+    throw Error(error.message);
+  }
+
+  return data;
+}
