@@ -42,3 +42,20 @@ export async function getAllPostsAction() {
 
   return data;
 }
+
+interface LikePostActionArgs {
+  post_id: string;
+  like: { id: string; user_id: string }[];
+}
+export async function likePostAction({ post_id, like }: LikePostActionArgs) {
+  const supabase = createClient();
+  const { id } = await getCurrentUserAction();
+
+  const userExist = like.find((l) => l.user_id === id);
+
+  userExist
+    ? await supabase.from("like").delete().eq("id", userExist.id)
+    : await supabase.from("like").insert({ user_id: id, post_id });
+
+  revalidatePath("/posts");
+}
