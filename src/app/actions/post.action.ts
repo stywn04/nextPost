@@ -111,3 +111,18 @@ export async function commentAction(post_id: string, content: string) {
 
   revalidatePath(`/post/${post_id}`);
 }
+
+export async function getAllPostCommentAction(post_id: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("comment")
+    .select(`*,user(username,name,avatar)`)
+    .eq("post_id", post_id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw Error(error.message);
+  }
+
+  return data;
+}
