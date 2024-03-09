@@ -12,6 +12,15 @@ import { getCurrentUserAction } from "@/app/actions/user.action";
 import { CommentForm } from "@/components/comment/comment-form";
 import { DateTime } from "luxon";
 
+
+export async function generateMetadata({ params }: PostPageProps) {
+  const { id } = params
+  const { user, content } = await getPostByIdAction(id)
+  return {
+    title: `@${user?.username} : ${content}`
+  }
+}
+
 interface PostPageProps {
   params: { id: string };
 }
