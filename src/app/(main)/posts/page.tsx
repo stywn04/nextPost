@@ -33,7 +33,10 @@ export default async function PostsPage() {
               <PostActivity user_id={id} post_id={post.id} like={post.like} />
             </section>
             <section className="flex items-center justify-between text-sm text-slate-700 ml-5">
-              <PostCount like={post.like.length} comment={post.like.length} />
+              <PostCount
+                like={post.like.length}
+                comment={post.comment.length}
+              />
               <PostDate created_at={post.created_at} />
             </section>
           </div>
