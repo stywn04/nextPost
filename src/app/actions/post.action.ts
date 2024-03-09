@@ -91,3 +91,23 @@ export async function getPostByIdAction(id: string) {
 
   return data;
 }
+
+export async function commentAction(post_id: string, content: string) {
+  const supabase = createClient();
+  const { id } = await getCurrentUserAction();
+
+  if (content.length < 1) {
+    throw Error("Cannot submit empty comment!");
+  }
+
+  const { error } = await supabase.from("comment").insert({
+    content,
+    post_id,
+    user_id: id,
+  });
+  if (error) {
+    throw Error(error.message);
+  }
+
+  revalidatePath(`/post/${post_id}`);
+}

@@ -6,6 +6,7 @@ import { PostActivity } from "@/components/post/post-activity";
 import { PostCount } from "@/components/post/count";
 import { PostDate } from "@/components/post/date";
 import { getCurrentUserAction } from "@/app/actions/user.action";
+import { CommentForm } from "@/components/comment/comment-form";
 
 interface PostPageProps {
   params: { id: string };
@@ -16,7 +17,7 @@ export default async function PostPage({ params }: PostPageProps) {
   const { id: user_id } = await getCurrentUserAction();
   return (
     <main>
-      <div key={post.id} className="p-5 border-b-[1px] border-slate-900">
+      <div key={post.id} className="pb-5 border-b-[1px] border-slate-900">
         <section className="flex items-start justify-between ">
           <PostUser
             avatar={post.user?.avatar as string}
@@ -33,6 +34,10 @@ export default async function PostPage({ params }: PostPageProps) {
           <PostCount like={post.like.length} comment={post.comment.length} />
           <PostDate created_at={post.created_at} />
         </section>
+      </div>
+
+      <div className="border-b-[1px] border-slate-900 p-5">
+        <CommentForm post_id={post.id} />
       </div>
     </main>
   );
