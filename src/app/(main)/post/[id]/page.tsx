@@ -46,7 +46,16 @@ export default async function PostPage({ params }: PostPageProps) {
           <PostOptions />
         </section>
         <section className="my-2">
-          <PostContent image={post.image} content={post.content} />
+          <div className="py-5 whitespace-pre-line">
+            {post.image ? (
+              <img
+                src={post.image}
+                alt={post.content}
+                className="w-full h-full rounded-md mb-2"
+              />
+            ) : null}
+            <p>{post.content}</p>
+          </div>
           <PostActivity user_id={user_id} post_id={post.id} like={post.like} />
         </section>
         <section className="flex items-center justify-between text-sm text-slate-700 ">

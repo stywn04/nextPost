@@ -31,7 +31,11 @@ export default async function PostsPage() {
               <PostOptions />
             </section>
             <section className="ml-5 pl-7 border-l-[1px] border-slate-900 my-2">
-              <PostContent image={post.image} content={post.content} />
+              <PostContent
+                post_id={post.id}
+                image={post.image}
+                content={post.content}
+              />
               <PostActivity user_id={id} post_id={post.id} like={post.like} />
             </section>
             <section className="flex items-center justify-between text-sm text-slate-700 ml-5">

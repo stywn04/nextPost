@@ -68,7 +68,11 @@ export default async function ProfilePage() {
               <PostOptions />
             </section>
             <section className="ml-5 pl-7 border-l-[1px] border-slate-900 my-2">
-              <PostContent image={post.image} content={post.content} />
+              <PostContent
+                post_id={post.id}
+                image={post.image}
+                content={post.content}
+              />
               <PostActivity
                 user_id={user.id}
                 post_id={post.id}
