@@ -7,7 +7,7 @@ export async function uploadImage(image: File) {
   const supabase = createClient();
   const { error } = await supabase.storage
     .from("supapost")
-    .upload(`/post/${image.name}`, image);
+    .upload(`/post/${image.name}`, image, { upsert: true });
 
   if (error) {
     throw Error(error.message);
