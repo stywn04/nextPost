@@ -9,7 +9,6 @@ interface PaginationProps {
 export function Pagination({ page, totalPages }: PaginationProps) {
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname);
   function prevHandler() {
     if (page <= 1) return;
 

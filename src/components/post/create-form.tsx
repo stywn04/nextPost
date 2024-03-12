@@ -42,7 +42,11 @@ export function CreatePostForm() {
     });
   }
   return (
-    <form ref={formRef} onSubmit={submitPostHandler} className="col-span-11">
+    <form
+      ref={formRef}
+      onSubmit={submitPostHandler}
+      className="col-span-12 md:col-span-11"
+    >
       <fieldset disabled={isPending} className="flex flex-col gap-3">
         <textarea
           name="content"
