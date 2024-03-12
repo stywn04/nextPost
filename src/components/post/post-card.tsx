@@ -1,4 +1,4 @@
-import { PostCardType } from "@/app/actions/post.action";
+import { PostType } from "@/app/actions/post.action";
 import { getCurrentUserAction } from "@/app/actions/user.action";
 import {
   PostUser,
@@ -8,7 +8,7 @@ import {
   PostContent,
   PostOptions,
 } from "@/components/post";
-export async function PostCard({ post }: { post: PostCardType }) {
+export async function PostCard({ post }: { post: PostType }) {
   const { id } = await getCurrentUserAction();
   return (
     <div key={post.id} className="p-5 border-b-[1px] border-slate-900">

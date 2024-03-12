@@ -91,10 +91,9 @@ export async function getPostByIdAction(id: string) {
   }
 
   return data;
-
 }
 
-export type PostCardType = Awaited<ReturnType<typeof getPostByIdAction>>
+export type PostType = Awaited<ReturnType<typeof getPostByIdAction>>;
 
 export async function commentAction(post_id: string, content: string) {
   const supabase = createClient();
