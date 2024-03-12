@@ -12,7 +12,12 @@ export async function generateMetadata() {
   };
 }
 
-export default async function ProfilePage() {
+interface ProfilePageProps {
+  searchParams: { page: number | undefined };
+}
+
+export default async function ProfilePage({ searchParams }: ProfilePageProps) {
+  const page = searchParams.page ?? 1;
   const user = await getCurrentUserAction();
   return (
     <main>
@@ -41,13 +46,14 @@ export default async function ProfilePage() {
         bio={user.bio}
       />
       <Suspense
+        key={page}
         fallback={
           <div className="py-10">
             <SubmitLoading />
           </div>
         }
       >
-        <UserPosts />
+        <UserPosts page={page} />
       </Suspense>
     </main>
   );
