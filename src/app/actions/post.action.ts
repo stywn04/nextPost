@@ -151,7 +151,6 @@ export async function getPostByUserId() {
 }
 
 export async function searchPostByQueryAction(query: string) {
-  if (query.length < 1) return;
   const supabase = createClient();
   const { data, error } = await supabase
     .from("post")
