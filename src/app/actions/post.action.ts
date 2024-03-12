@@ -34,6 +34,7 @@ export async function getAllPostsAction() {
     comment(content,user(name,username,avatar))
   `,
     )
+    .range(0, 1)
     .order("created_at", { ascending: false });
 
   if (!data) {
@@ -90,7 +91,10 @@ export async function getPostByIdAction(id: string) {
   }
 
   return data;
+
 }
+
+export type PostCardType = Awaited<ReturnType<typeof getPostByIdAction>>
 
 export async function commentAction(post_id: string, content: string) {
   const supabase = createClient();
