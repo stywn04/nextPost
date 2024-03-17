@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { ErrorField } from "./field-error";
 import { useTransition } from "react";
 import { registerAction } from "@/app/actions/auth.action";
-import toast from "react-hot-toast";
 import { SubmitLoading } from "../submit-loading";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export function RegisterForm() {
   const {
@@ -17,12 +18,19 @@ export function RegisterForm() {
     formState: { errors },
   } = useForm<RegisterType>({ resolver: zodResolver(registerSchema) });
   const [isPending, setTransition] = useTransition();
+  const router = useRouter();
 
   async function registerHandler(fields: RegisterType) {
     setTransition(async () => {
       try {
-        await registerAction(fields);
+        const { isError, message } = await registerAction(fields);
+        if (isError) {
+          toast.error(message);
+          return;
+        }
+        toast.success(message);
         reset();
+        router.push("/profile");
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       }

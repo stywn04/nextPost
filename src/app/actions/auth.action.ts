@@ -20,7 +20,7 @@ import { revalidatePath } from "next/cache";
 export async function registerAction(fields: RegisterType) {
   const validatedFields = registerSchema.safeParse(fields);
   if (!validatedFields.success) {
-    throw Error("Invalid fields!");
+    return { isError: true, message: "Invalid fields!" };
   }
 
   const supabase = createClient();
@@ -28,12 +28,12 @@ export async function registerAction(fields: RegisterType) {
 
   const usernameExist = await findUserByUsername(username);
   if (usernameExist) {
-    throw Error("Username already exist!");
+    return { isError: true, message: "Username already exist!" };
   }
   const emailExist = await findUserByEmail(email);
 
   if (emailExist) {
-    throw Error("Email already registered!");
+    return { isError: true, message: "Email already registered!" };
   }
 
   const { error } = await supabase.auth.signUp({
@@ -51,16 +51,16 @@ export async function registerAction(fields: RegisterType) {
   });
 
   if (error) {
-    throw Error(error.message);
+    return { isError: true, message: error.message };
   }
 
-  redirect("/profile");
+  return { isError: false, message: "Registered successfully!" };
 }
 
-export async function loginAction(fields: LoginType, redirectTo: string) {
+export async function loginAction(fields: LoginType) {
   const validatedFields = loginSchema.safeParse(fields);
   if (!validatedFields.success) {
-    throw Error("Invalid fields!");
+    return { isError: true, message: "Invalid fields!" };
   }
 
   const supabase = createClient();
@@ -72,9 +72,10 @@ export async function loginAction(fields: LoginType, redirectTo: string) {
   });
 
   if (error) {
-    throw Error(error.message);
+    return { isError: true, message: error.message };
   }
-  redirect(redirectTo);
+
+  return { isError: false, message: "Successfully loged in!" };
 }
 
 export async function logoutAction() {

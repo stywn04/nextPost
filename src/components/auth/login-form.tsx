@@ -8,6 +8,7 @@ import { useTransition } from "react";
 import { loginAction } from "@/app/actions/auth.action";
 import toast from "react-hot-toast";
 import { SubmitLoading } from "../submit-loading";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({ redirectTo }: { redirectTo: string }) {
   const {
@@ -17,12 +18,19 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
     formState: { errors },
   } = useForm<LoginType>({ resolver: zodResolver(loginSchema) });
   const [isPending, setTransition] = useTransition();
+  const router = useRouter();
 
   async function registerHandler(fields: LoginType) {
     setTransition(async () => {
       try {
-        await loginAction(fields, redirectTo);
+        const { isError, message } = await loginAction(fields);
+        if (isError) {
+          toast.error(message);
+          return;
+        }
+        toast.success(message);
         reset();
+        router.push(redirectTo);
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       }
