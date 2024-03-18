@@ -89,7 +89,7 @@ export async function logoutAction() {
 export async function updateUserAction(fields: UpdateUserType, avatar: string) {
   const validatedFields = updateUserSchema.safeParse(fields);
   if (!validatedFields.success) {
-    throw Error("Invalid fields!");
+    return { isError: true, message: "Invalid fields" };
   }
   const supabase = createClient();
   const { id, username: currentUsername } = await getCurrentUserAction();
@@ -97,7 +97,7 @@ export async function updateUserAction(fields: UpdateUserType, avatar: string) {
 
   const usernameExist = await findUserByUsername(validatedFields.data.username);
   if (usernameExist && currentUsername !== username) {
-    throw Error("Username already in used.");
+    return { isError: true, message: "Username already exist!" };
   }
   const { error } = await supabase.auth.updateUser({
     data: { ...validatedFields.data, avatar },
@@ -108,10 +108,10 @@ export async function updateUserAction(fields: UpdateUserType, avatar: string) {
     .eq("id", id);
 
   if (error) {
-    throw Error(error.message);
+    return { isError: true, message: error.message };
   }
   if (updateUserError) {
-    throw Error(updateUserError.message);
+    return { isError: true, message: updateUserError.message };
   }
   revalidatePath("/profile");
 }

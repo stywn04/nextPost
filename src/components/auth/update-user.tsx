@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UpdateUserModal } from "./update-user-modal";
 
 interface UpdateUserProps {
@@ -19,6 +19,12 @@ export function ButtonUpdateUser({
   function closeModal() {
     setOpen(false);
   }
+
+  useEffect(() => {
+    if (document) {
+      document.body.style.overflow = open ? "hidden" : "auto";
+    }
+  }, [open]);
   return (
     <>
       <button

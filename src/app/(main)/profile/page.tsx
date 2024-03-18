@@ -25,12 +25,12 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
         <div className="col-span-8">
           <h1 className="font-bold text-xl">{user.name}</h1>
           <p className="text-slate-700">@{user.username}</p>
-          <div className="whitespace-pre-line mt-5">
+          <div className="whitespace-pre-line mt-10">
             <span>{user.bio}</span>
           </div>
         </div>
-        <div className="col-span-4 flex justify-end">
-          <div className="w-24 w-24 rounded-full overflow-hidden">
+        <div className="col-span-4 flex justify-end ">
+          <div className="w-28 w-28 rounded-full overflow-hidden">
             <img
               src={user.avatar}
               alt={user.name}

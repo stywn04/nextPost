@@ -44,15 +44,22 @@ export function UpdateUserModal({
     setTransition(async () => {
       try {
         if (!imagePick) {
-          await updateUserAction(field, avatar);
-          closeModal()
+          const status = await updateUserAction(field, avatar);
+          if (status?.isError) {
+            toast.error(status.message);
+            return;
+          }
+          closeModal();
+          toast.success("Profile updated!");
           return;
         }
         const avatar_url = await uploadImage(imagePick);
-        await updateUserAction(field, avatar_url);
-        closeModal()
-
-
+        const status = await updateUserAction(field, avatar_url);
+        if (status?.isError) {
+          toast.error(status.message);
+          return;
+        }
+        closeModal();
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       }
@@ -69,11 +76,11 @@ export function UpdateUserModal({
   return (
     <div
       onClick={closeModal}
-      className="fixed inset-0 min-h-screen z-50 bg-slate-950/75 flex items-center justify-center "
+      className="fixed inset-0 min-h-screen z-50 bg-slate-950/75 flex items-center justify-center backdrop-blur-lg"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-10/12 md:8/12 lg:w-5/12 bg-slate-950 border border-slate-900 p-8 rounded-md animate-in"
+        className="w-11/12 md:8/12 lg:w-5/12 bg-slate-950 border border-slate-900 p-8 rounded-md animate-in"
       >
         <section className="flex items-center justify-between pb-5">
           <h1 className="font-bold text-xl">Update account</h1>
