@@ -110,7 +110,7 @@ export async function commentAction(post_id: string, content: string) {
   const { id } = await getCurrentUserAction();
 
   if (content.length < 1) {
-    throw Error("Cannot submit empty comment!");
+    return { isError: true, message: "Cannot submit empty comment" };
   }
 
   const { error } = await supabase.from("comment").insert({
@@ -119,9 +119,8 @@ export async function commentAction(post_id: string, content: string) {
     user_id: id,
   });
   if (error) {
-    throw Error(error.message);
+    return { isError: true, message: error.message };
   }
-
   revalidatePath(`/post/${post_id}`);
 }
 

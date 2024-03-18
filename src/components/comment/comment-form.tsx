@@ -18,8 +18,13 @@ export function CommentForm({ post_id }: { post_id: string }) {
         if (content.length < 1) {
           throw Error("Cannot submit empty comment!");
         }
-        await commentAction(post_id, content);
+        const status = await commentAction(post_id, content);
+        if (status?.isError) {
+          toast.error(status.message);
+          return;
+        }
         formRef.current?.reset();
+        toast.success("Comment submitted!");
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       }
