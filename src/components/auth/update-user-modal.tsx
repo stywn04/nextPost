@@ -60,6 +60,7 @@ export function UpdateUserModal({
           return;
         }
         closeModal();
+        toast.success("Profile updated!");
       } catch (error) {
         if (error instanceof Error) toast.error(error.message);
       }
