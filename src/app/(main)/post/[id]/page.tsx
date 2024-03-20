@@ -7,7 +7,6 @@ import {
   PostCount,
   PostActivity,
   PostDate,
-  PostContent,
   PostOptions,
 } from "@/components/post";
 import { getCurrentUserAction } from "@/app/actions/user.action";
@@ -18,6 +17,9 @@ import {
   CommentDate,
 } from "@/components/comment";
 import { CommentCard } from "@/components/comment/comment-card";
+import { Suspense } from "react";
+import Loading from "../../loading";
+import { Comments } from "@/components/comments";
 
 export async function generateMetadata({ params }: PostPageProps) {
   const { id } = params;
@@ -29,12 +31,16 @@ export async function generateMetadata({ params }: PostPageProps) {
 
 interface PostPageProps {
   params: { id: string };
+  searchParams: { page: number | undefined };
 }
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage({
+  params,
+  searchParams,
+}: PostPageProps) {
   const { id } = params;
-  const post = await getPostByIdAction(id);
   const { id: user_id } = await getCurrentUserAction();
-  const comments = await getAllPostCommentAction(post.id);
+  const page = searchParams.page ?? 1;
+  const post = await getPostByIdAction(id);
   return (
     <main>
       <div key={post.id} className="pb-5 border-b-[1px] border-slate-900">
@@ -68,11 +74,16 @@ export default async function PostPage({ params }: PostPageProps) {
       <div className="border-b-[1px] border-slate-900 p-5">
         <CommentForm post_id={post.id} />
       </div>
-      <div>
-        {comments.map((comment) => (
-          <CommentCard key={comment.id} comment={comment} />
-        ))}
-      </div>
+      <Suspense
+        key={page}
+        fallback={
+          <div className="py-10">
+            <Loading />
+          </div>
+        }
+      >
+        <Comments id={id} page={Number(page)} />
+      </Suspense>
     </main>
   );
 }
