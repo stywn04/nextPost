@@ -17,6 +17,7 @@ import {
   CommentUser,
   CommentDate,
 } from "@/components/comment";
+import { CommentCard } from "@/components/comment/comment-card";
 
 export async function generateMetadata({ params }: PostPageProps) {
   const { id } = params;
@@ -69,15 +70,7 @@ export default async function PostPage({ params }: PostPageProps) {
       </div>
       <div>
         {comments.map((comment) => (
-          <div key={comment.id} className="p-5 border-b-[1px] border-slate-900">
-            <CommentUser
-              avatar={comment.user?.avatar as string}
-              username={comment.user?.username as string}
-              name={comment.user?.name as string}
-            />
-            <CommentContent content={comment.content} />
-            <CommentDate created_at={comment.created_at} />
-          </div>
+          <CommentCard key={comment.id} comment={comment} />
         ))}
       </div>
     </main>
