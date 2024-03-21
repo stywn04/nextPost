@@ -209,3 +209,15 @@ export async function searchPostByQueryAction(query: string) {
 
   return data;
 }
+
+export async function deletePostAction(post_id: string, path: string) {
+  const supabase = createClient();
+
+  const { error } = await supabase.from("post").delete().eq("id", post_id);
+  if (error) {
+    return { isError: true, message: error.message };
+  }
+
+  revalidatePath(path);
+  return { isError: false, message: "Post deleted!" };
+}

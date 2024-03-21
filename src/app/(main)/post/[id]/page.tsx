@@ -50,7 +50,11 @@ export default async function PostPage({
             name={post.user?.name as string}
             username={post.user?.username as string}
           />
-          <PostOptions />
+          <PostOptions
+            post_id={post.id}
+            user_id={post.user_id}
+            current_user_id={user_id}
+          />
         </section>
         <section className="my-2">
           <div className="py-5 whitespace-pre-line">

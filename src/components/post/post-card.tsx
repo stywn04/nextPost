@@ -18,7 +18,11 @@ export async function PostCard({ post }: { post: PostType }) {
           name={post.user?.name as string}
           username={post.user?.username as string}
         />
-        <PostOptions />
+        <PostOptions
+          post_id={post.id}
+          user_id={post.user_id}
+          current_user_id={id}
+        />
       </section>
       <section className="ml-5 pl-7 border-l-[1px] border-slate-900 my-2">
         <PostContent
